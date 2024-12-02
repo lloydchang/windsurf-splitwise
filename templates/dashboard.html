@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="mt-5">
+    <h1>Welcome, {{ user.username }}!</h1>
+    
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    Your Groups
+                    <a href="{{ url_for('create_group') }}" class="btn btn-sm btn-primary float-end">Create Group</a>
+                </div>
+                <div class="card-body">
+                    {% if user.groups %}
+                        <ul class="list-group">
+                        {% for group in user.groups %}
+                            <li class="list-group-item">
+                                {{ group.name }}
+                                <a href="#" class="btn btn-sm btn-outline-secondary float-end">View Details</a>
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>You haven't joined any groups yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    Recent Expenses
+                    <a href="{{ url_for('add_expense') }}" class="btn btn-sm btn-primary float-end">Add Expense</a>
+                </div>
+                <div class="card-body">
+                    {% if user.expenses %}
+                        <ul class="list-group">
+                        {% for expense in user.expenses[-5:] %}
+                            <li class="list-group-item">
+                                {{ expense.description }} - ${{ expense.amount }}
+                                {% if expense.group %}
+                                    <span class="badge bg-secondary">{{ expense.group.name }}</span>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>No expenses recorded yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
